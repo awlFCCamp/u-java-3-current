@@ -37,11 +37,7 @@ public class FileController {
     private final FileService fileService;
     private UserService userService;
 
-    private static final long MAX_UPLOAD_SIZE = 10 * 1024 * 1024; // 10 MB
-    //@Autowired
-    //private CommonsMultipartResolver commonsMultipartResolver;
-    //@Autowired
-    //private StandardServletMultipartResolver servletMultipartResolver;
+    private static final long MAX_UPLOAD_SIZE = 10 * 1024 * 1024;
     @GetMapping
     public String homePage(Model model,Authentication authentication) {
         String userName = authentication.getName();
@@ -65,21 +61,17 @@ public class FileController {
 
         if (isFileNameInUse) {
             model.addAttribute("result", "error");
-            model.addAttribute("message", "FileName is in use");
+            model.addAttribute("message", "Can't upload same file again.");
             return "result";
         }
         try {
             if (multiFile.getSize() > MAX_UPLOAD_SIZE) {
                 throw new MaxUploadSizeExceededException(MAX_UPLOAD_SIZE);
             }else {
-
-
                 String fileName = multiFile.getOriginalFilename();
                 String contentType = multiFile.getContentType();
                 Long fileSize = multiFile.getSize();
                 byte[] fileData = multiFile.getBytes();
-
-
                 fileService.createFile(fileName, fileSize, contentType, fileData, userId);
                 model.addAttribute("result", "success");
             }

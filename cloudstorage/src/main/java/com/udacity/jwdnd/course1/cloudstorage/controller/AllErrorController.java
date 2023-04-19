@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class AllErrorController implements ErrorController {
 
     @GetMapping
-    public String handleError(HttpServletRequest request) {
+    public String handleAllError(HttpServletRequest request) {
         Integer statusCode = (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         if (statusCode == null) {

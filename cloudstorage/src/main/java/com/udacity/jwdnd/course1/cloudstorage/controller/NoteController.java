@@ -33,15 +33,15 @@ public class NoteController {
     public String createUpdateNote(Note note, Model model,Authentication authentication){
         String userName = authentication.getName();
         User user = userService.getUser(userName);
-        if(note.getNoteId()==null){
-            noteService.createNote(note,user.getUserId());
-            model.addAttribute("result","success");
+        boolean isNoteNotCreated = note.getNoteId() == null;
 
-        }else{
+        if (isNoteNotCreated) {
+            noteService.createNote(note, user.getUserId());
+        } else {
             noteService.updateNote(note);
-            model.addAttribute("result","success");
-
         }
+
+        model.addAttribute("result", "success");
         return "result";
     }
 
