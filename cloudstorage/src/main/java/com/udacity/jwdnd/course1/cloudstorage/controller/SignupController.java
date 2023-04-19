@@ -40,11 +40,13 @@ public class SignupController {
 
         if (error.isEmpty()) {
             model.addAttribute("signupSuccess", true);
+            return "redirect:/login";
         } else {
             model.addAttribute("signupError", error);
         }
 
         return "signup";
+
 
         }
 
