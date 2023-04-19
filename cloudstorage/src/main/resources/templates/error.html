@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -8,8 +8,11 @@
     <title>Error 404</title>
 </head>
 <body>
-<h1>An Exception Occurred</h1>
+<h1>There is an error in your operation</h1>
 <h2>Please try again.</h2>
+<h3 th:text="${signupError}"></h3>
+<h3 th:text="${uploadError}"></h3>
+<h3 th:text="${noteError}"></h3>
 <a href="/home">Go to Home Page</a> <br>
 <a href="/login">Go to Login Page</a>
 </body>

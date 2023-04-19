@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/notes")
@@ -30,15 +31,31 @@ public class NoteController {
     }
 
     @PostMapping
-    public String createUpdateNote(Note note, Model model,Authentication authentication){
+    public String createUpdateNote(Note note, Model model, Authentication authentication, RedirectAttributes redirectAttributes){
         String userName = authentication.getName();
         User user = userService.getUser(userName);
         boolean isNoteNotCreated = note.getNoteId() == null;
 
         if (isNoteNotCreated) {
-            noteService.createNote(note, user.getUserId());
+            if(note.getNoteDescription().length()>1000){
+                String error="";
+                error = "Your note description size exceeds the limit. Can't be stored";
+                model.addAttribute("noteError", error);
+                redirectAttributes.addFlashAttribute("noteError", error);
+                return "redirect:/error";
+            }else {
+                noteService.createNote(note, user.getUserId());
+            }
         } else {
-            noteService.updateNote(note);
+            if(note.getNoteDescription().length()>1000){
+                String error="";
+                error = "Your note description size exceeds the limit. Can't be stored";
+                model.addAttribute("noteError", error);
+                redirectAttributes.addFlashAttribute("noteError", error);
+                return "redirect:/error";}
+            else {
+                noteService.updateNote(note);
+            }
         }
 
         model.addAttribute("result", "success");

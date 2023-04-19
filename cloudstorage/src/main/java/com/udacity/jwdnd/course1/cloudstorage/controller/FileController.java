@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -47,7 +48,7 @@ public class FileController {
     }
 
     @PostMapping
-    public String uploadFile(@RequestParam("fileUpload") MultipartFile multiFile, Model model,Authentication authentication) throws IOException {
+    public String uploadFile(@RequestParam("fileUpload") MultipartFile multiFile, Model model, Authentication authentication, RedirectAttributes redirectAttributes) throws IOException {
         String userName = authentication.getName();
         User user = userService.getUser(userName);
         Integer userId = user.getUserId();
@@ -66,7 +67,12 @@ public class FileController {
         }
         try {
             if (multiFile.getSize() > MAX_UPLOAD_SIZE) {
-                throw new MaxUploadSizeExceededException(MAX_UPLOAD_SIZE);
+                String error="";
+                error = "Your file size exceeds the limit. Can't be uploaded";
+                model.addAttribute("uploadError", error);
+                redirectAttributes.addFlashAttribute("uploadError", error);
+                return "redirect:/error";
+                //throw new MaxUploadSizeExceededException(MAX_UPLOAD_SIZE);
             }else {
                 String fileName = multiFile.getOriginalFilename();
                 String contentType = multiFile.getContentType();
