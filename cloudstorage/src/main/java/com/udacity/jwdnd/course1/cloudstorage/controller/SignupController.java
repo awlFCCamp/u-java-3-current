@@ -27,25 +27,23 @@ public class SignupController {
         String error = "";
 
         if (!userService.isUsernameAvailable(user.getUsername())) {
-            error = "The username already exists.";
-        }
-
-        try{
-            userService.createUser(user);
-            redirectAttributes.addFlashAttribute("signupSuccess", true);
-        }catch(Exception e){
-            error="Signup exception occurred";
-            System.out.println("Signup exception occurred");
+            error = "This username is already in our system.";
+        } else {
+            try {
+                userService.createUser(user);
+                redirectAttributes.addFlashAttribute("signupSuccess", true);
+            } catch (Exception e) {
+                error = "Signup exception occurred";
+                System.out.println("Signup exception occurred");
+            }
         }
 
         if (error.isEmpty()) {
-            model.addAttribute("signupSuccess", true);
             return "redirect:/login";
         } else {
             model.addAttribute("signupError", error);
+            return "signup";
         }
-
-        return "signup";
 
 
         }
