@@ -85,7 +85,6 @@ public class NoteCrudTests {
         wait.until(ExpectedConditions.elementToBeClickable(savechangesBtn)).click();
         Assertions.assertEquals("Result", driver.getTitle());
 
-        //check for note
         driver.get("http://localhost:" + this.localport + "/home");
         notesTab = driver.findElement(By.id("nav-notes"));
         js.executeScript("arguments[0].click()", notesTab);
@@ -117,7 +116,6 @@ public class NoteCrudTests {
         wait.until(ExpectedConditions.elementToBeClickable(savechangesBtn)).click();
         Assertions.assertEquals("Result", driver.getTitle());
 
-        //update note
         driver.get("http://localhost:" + this.localport + "/home");
         notesTab = driver.findElement(By.id("nav-notes-tab"));
         js.executeScript("arguments[0].click()", notesTab);
@@ -138,7 +136,6 @@ public class NoteCrudTests {
         savechangesBtn.click();
         Assertions.assertEquals("Result", driver.getTitle());
 
-        //check the updated note
         driver.get("http://localhost:" + this.localport + "/home");
         notesTab = driver.findElement(By.id("nav-notes-tab"));
         js.executeScript("arguments[0].click()", notesTab);

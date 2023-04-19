@@ -154,7 +154,7 @@ public class CredentialCRUDTests {
         credentialSaveBtn.click();
         Assertions.assertEquals("Result", driver.getTitle());
 
-        //check the updated
+
        driver.get("http://localhost:" + this.localport + "/home");
         credentialsTab = driver.findElement(By.id("nav-credentials-tab"));
         js.executeScript("arguments[0].click()", credentialsTab);
